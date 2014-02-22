@@ -4,7 +4,9 @@ package worlds
 	import constants.Direction;
 	import constants.GC;
 	import entities.Actor;
-	import net.flashpunk.Entity;
+import entities.Dialog;
+
+import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Grid;
@@ -23,6 +25,7 @@ package worlds
 		private var _grid:Grid;
 		private var _map:Tilemap;
 		private var _mapEntity:Entity;
+		private var _dialog:Dialog;
 		
 		public function MapWorld(map:Class) 
 		{
@@ -34,29 +37,45 @@ package worlds
 			generateMap(_rawMapData);
 			_player = new Actor(2, 2, Direction.DOWN, GC.MOVE_SPEED, Assets.SPRITE_BLUE);
 			add(_player);
+			_dialog = new Dialog(0, 96, "I love shorts!\nThey%e comfy and\neasy to wear!\nText is limited\nto 17 characters\non a single line.\nAll praise the\nHELIX FOSSIL!");
+			add(_dialog);
 			super.begin();
 		}
 		
 		override public function update():void 
 		{
-			if (Input.check((Key.UP || Key.DOWN || Key.LEFT || Key.RIGHT) && Input.lastKey))
+			if (_dialog.world == this)
 			{
-				switch (Input.lastKey)
+				if (Input.pressed(Key.SPACE))
 				{
-					case Key.UP:
-						_player.applyInput(Direction.UP);
-						break;
-					case Key.DOWN:
-						_player.applyInput(Direction.DOWN);
-						break;
-					case Key.LEFT:
-						_player.applyInput(Direction.LEFT);
-						break;
-					case Key.RIGHT:
-						_player.applyInput(Direction.RIGHT);
-						break;
-					default:
-						break;
+					_dialog.resume();
+				}
+			}
+			else
+			{   if (Input.pressed(Key.SPACE))
+				{
+					_dialog = new Dialog(0, 96, "I love shorts!\nThey%e comfy and\neasy to wear!\nText is limited\nto 17 characters\non a single line.\nAll praise the\nHELIX FOSSIL!");
+					add(_dialog);
+				}
+				else if (Input.check((Key.UP || Key.DOWN || Key.LEFT || Key.RIGHT) && Input.lastKey))
+				{
+					switch (Input.lastKey)
+					{
+						case Key.UP:
+							_player.applyInput(Direction.UP);
+							break;
+						case Key.DOWN:
+							_player.applyInput(Direction.DOWN);
+							break;
+						case Key.LEFT:
+							_player.applyInput(Direction.LEFT);
+							break;
+						case Key.RIGHT:
+							_player.applyInput(Direction.RIGHT);
+							break;
+						default:
+							break;
+					}
 				}
 			}
 			

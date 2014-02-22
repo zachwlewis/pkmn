@@ -8,6 +8,7 @@ package constants
 	{
 		[Embed(source = "../../assets/tiles.png")] public static const MAP_TILES:Class;
 		[Embed(source = "../../assets/characters.png")] public static const CHARACTER_SPRITES:Class;
+		[Embed(source = "../../assets/menus.png")] public static const MENU_SPRITES:Class;
 		
 		public static const SPRITE_RED:uint = 0;
 		public static const SPRITE_REDBIKE:uint = 1;

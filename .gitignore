@@ -219,3 +219,9 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 pkmn.lxml
+
+pkmn.iml
+
+pkmn.ipr
+
+pkmn.iws

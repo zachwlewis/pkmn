@@ -1,7 +1,5 @@
 package
 {
-	import constants.Assets;
-	import constants.GC;
 	import constants.Maps;
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
