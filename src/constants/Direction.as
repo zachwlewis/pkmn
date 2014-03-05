@@ -36,6 +36,32 @@ package constants
 			
 			return p;
 		}
+		
+		public static function GetOppositeDirection(direction:String):String
+		{
+			// Set a default.
+			var s:String = DOWN;
+			
+			switch (direction)
+			{
+				case UP:
+					s = DOWN;
+					break;
+				case DOWN:
+					s = UP;
+					break;
+				case LEFT:
+					s = RIGHT;
+					break;
+				case RIGHT:
+					s = LEFT;
+					break;
+				default:
+					break;
+			}
+			
+			return s;
+		}
 	}
 
 }

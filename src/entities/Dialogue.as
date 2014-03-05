@@ -8,7 +8,7 @@ import constants.GC;
 import net.flashpunk.Entity;
 import net.flashpunk.graphics.Tilemap;
 
-public class Dialog extends Entity
+public class Dialogue extends Entity
 {
 	private var _tilemap:Tilemap;
 	private var _text:String;
@@ -19,15 +19,14 @@ public class Dialog extends Entity
 	private var _textTick:uint = 0;
 	private const TEXT_SPEED:uint = 5;
 
-	public function Dialog(x:Number = 0, y:Number = 96, text:String = "")
+	public function Dialogue()
 	{
-		_text = text;
 		_tilemap = new Tilemap(Assets.MENU_SPRITES, 160, 48, 8, 8);
-		_tilemap.x = x;
-		_tilemap.y = y;
+		_tilemap.x = 0;
+		_tilemap.y = 96;
 		_tilemap.scrollX = 0;
 		_tilemap.scrollY = 0;
-
+		
 		// Set up frame.
 		_tilemap.floodFill(0, 0, 0);
 		// Corners
@@ -40,6 +39,10 @@ public class Dialog extends Entity
 		_tilemap.setRect(1, _tilemap.rows - 1, _tilemap.columns - 2, 1, 5);
 		_tilemap.setRect(0, 1, 1, _tilemap.rows - 2, 6);
 		_tilemap.setRect(_tilemap.columns - 1, 1, 1, _tilemap.rows - 2, 6);
+		
+		// Pause the dialogue until it has been initialized with text.
+		_paused = true;
+		
 		super(0, 0, _tilemap);
 	}
 
@@ -61,6 +64,20 @@ public class Dialog extends Entity
 			}
 		}
 	}
+	
+	public function init(text:String):void
+	{
+		_text = text;
+		
+		// Reset dialogue.
+		_tilemap.setRect(1, 1, _tilemap.columns - 2, _tilemap.rows - 2, 0);
+		_characterIndex = 0;
+		_columnIndex = 1;
+		_rowIndex = 2;
+		
+		// Begin dialogue.
+		_paused = false;
+	}
 
 	override public function update():void
 	{
@@ -68,7 +85,6 @@ public class Dialog extends Entity
 		{
 			_textTick = GC.TEXT_SPEED;
 			var charCode:uint = _text.charCodeAt(_characterIndex);
-			trace(_text.charAt(_characterIndex), charCode);
 			if (charCode == 10)
 			{
 				// New line.

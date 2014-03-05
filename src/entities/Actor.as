@@ -19,14 +19,16 @@ package entities
 	 */
 	public class Actor extends Entity 
 	{
-		private var _sprite:Spritemap;
-		private var _facing:String;
-		private var _spriteIndex:uint;
-		private var _location:Point;
-		private var _canMove:Boolean = true;
-		private var _motion:MultiVarTween;
-		private var _speed:uint;
-		private var _hitbox:Hitbox;
+		protected var _sprite:Spritemap;
+		protected var _facing:String;
+		protected var _spriteIndex:uint;
+		protected var _location:Point;
+		protected var _canMove:Boolean = true;
+		protected var _motion:MultiVarTween;
+		protected var _speed:uint;
+		protected var _hitbox:Hitbox;
+		
+		public function get facing():String { return _facing; }
 		
 		public function Actor(tileX:uint = 0, tileY:uint = 0, facing:String = "down", speed:uint = 0, sprite:uint = 0) 
 		{
@@ -59,16 +61,18 @@ package entities
 			_motion = new MultiVarTween(onMovementComplete, Tween.PERSIST);
 			addTween(_motion, false);
 			
+			type = "actor";
+			
 			// Set the Entity's location and graphic.
 			super(GC.TILE_SIZE * tileX, GC.TILE_SIZE * tileY, _sprite, _hitbox);
 		}
 		
-		private function onMovementComplete():void
+		protected function onMovementComplete():void
 		{
 			_canMove = true;
 		}
 		
-		private function setFacing(facing:String):void
+		protected function setFacing(facing:String):void
 		{
 			_facing = facing;
 			_sprite.play(_facing, true, 1);
@@ -81,38 +85,32 @@ package entities
 			{
 				if (input != _facing)
 				{
-					// Change facing, but don't move yet.
-					// Facing changes takes half the time of a tile move.
 					setFacing(input);
-					_motion.tween(this, null, GC.TURN_SPEED);
-					_canMove = false;
 				}
-				else
+
+				var nextStep:Point = _location.add(Direction.GetDirectionValue(_facing));
+				var worldStep:Point = nextStep.clone();
+				worldStep.x *= GC.TILE_SIZE;
+				worldStep.y *= GC.TILE_SIZE;
+				
+				var map:Entity = MapWorld(world).getMap();
+				
+				// Check for possible movement.
+				if (worldStep.x >= 0 && worldStep.y >= 0 && worldStep.x < map.width && worldStep.y < map.height && !collideTypes(["maps", "actor"], worldStep.x, worldStep.y))
 				{
-					var nextStep:Point = _location.add(Direction.GetDirectionValue(_facing));
-					var worldStep:Point = nextStep.clone();
-					worldStep.x *= GC.TILE_SIZE;
-					worldStep.y *= GC.TILE_SIZE;
+					// Move one tile.
+					_location = nextStep;
 					
-					var map:Entity = MapWorld(world).getMap();
-					
-					// Check for possible movement.
-					if (worldStep.x >= 0 && worldStep.y >= 0 && worldStep.x < map.width && worldStep.y < map.height && !collideWith(map, worldStep.x, worldStep.y))
+					if (_facing == Direction.UP || _facing == Direction.DOWN)
 					{
-						// Move one tile.
-						_location = nextStep;
-						
-						if (_facing == Direction.UP || _facing == Direction.DOWN)
-						{
-							// Handle shuffle with a two frame walk cycle.
-							_sprite.flipped = !_sprite.flipped;
-						}
-						
-						_sprite.play(input, true);
-						_motion.tween(this, { x:_location.x * GC.TILE_SIZE, y:_location.y * GC.TILE_SIZE }, _speed);
-						_motion.start();
-						_canMove = false;
+						// Handle shuffle with a two frame walk cycle.
+						_sprite.flipped = !_sprite.flipped;
 					}
+					
+					_sprite.play(input, true);
+					_motion.tween(this, { x:_location.x * GC.TILE_SIZE, y:_location.y * GC.TILE_SIZE }, _speed);
+					_motion.start();
+					_canMove = false;
 				}
 				
 			}

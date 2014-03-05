@@ -13,6 +13,7 @@ package constants
 		public static const SPRITE_RED:uint = 0;
 		public static const SPRITE_REDBIKE:uint = 1;
 		public static const SPRITE_BLUE:uint = 2;
+		public static const SPRITE_SCIENTIST:uint = 3;
 	}
 
 }

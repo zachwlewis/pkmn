@@ -1,20 +1,27 @@
 <level width="160" height="144">
-  <Tiles tileset="Tiles" exportMode="CSV">1,1,1,1,1,1,13,1,5,5
-12,2,3,4,12,12,12,12,17,17
-12,14,15,16,12,12,12,12,12,12
+  <Tiles tileset="Tiles" exportMode="CSV">1,1,1,1,1,13,1,0,0,0
+12,12,12,12,12,12,12,0,0,0
+12,12,12,12,12,12,12,0,0,0
+12,12,2,3,4,12,12,1,1,5
+12,12,14,15,16,12,12,12,12,17
 12,12,12,12,12,12,12,12,12,12
-0,0,12,12,12,12,12,5,5,5
-0,0,12,12,12,12,12,17,17,17
-1,1,12,12,12,12,12,12,12,12
-12,12,12,5,12,12,5,12,12,12
-12,12,12,17,24,25,17,12,12,12</Tiles>
+12,12,12,12,12,12,12,12,12,12
+12,12,12,12,12,24,25,12,12,12
+0,0,0,0,0,0,0,0,0,0</Tiles>
   <Collision exportMode="Bitstring">1111111111
-0111000011
+0000000111
+0000000111
+0011100111
+0000000001
 0000000000
 0000000000
-1100000111
-1100000111
-1100000000
-0001001000
-0001001000</Collision>
+0000000000
+1111111111</Collision>
+  <Entities>
+    <Transition id="0" x="80" y="128" map="" xTile="0" yTile="0" face="" />
+    <Transition id="1" x="96" y="128" map="" xTile="0" yTile="0" face="" />
+    <DialogueNPC id="2" x="48" y="80" dialogue="Welcome to my&#xD;&#xA;home." />
+    <Interaction id="3" x="144" y="64" dialogue="These books seem&#xD;&#xA;to be untouched.&#xD;&#xA;They must be&#xD;&#xA;college textbooks." />
+    <Interaction id="4" x="80" y="0" dialogue="All praise the&#xD;&#xA;HELIX FOSSIL!" />
+  </Entities>
 </level>
